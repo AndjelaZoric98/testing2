@@ -10,7 +10,7 @@ public class SynergyCompany {
 
     @Override
     public String toString() {
-        String s= "Synergy ima zaposlene:\n ";
+        String s= "Zaposleni: ";
         for (Employee e: employees) {
             s+=e.toString() + "\n";
         }
@@ -21,4 +21,11 @@ public class SynergyCompany {
         return employees.add(e);
     }
 
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 }
