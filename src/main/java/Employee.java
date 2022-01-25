@@ -39,41 +39,17 @@ public class Employee {
 
     }
 
-
-
-    /*public int showDays(Employee e) {
-        daysLeft = 0;
-        for (int i = 0; i < companies.size(); i++) {
-            if ((Double) (e.companies.get(i).getTotalYears()) >= 5) {
-                daysLeft = 21;
-
-            } else if ((Double) (e.companies.get(i).getTotalYears()) >= 10) {
-                daysLeft = 22;
-
-            } else if ((Double) (e.companies.get(i).getTotalYears()) > 15) {
-                daysLeft = 23;
-
-            } else daysLeft = 20;
-        }
-
-        System.out.println("Broj slobodnih dana: " + daysLeft);
-        return daysLeft;
-
-    }*/
-
-
 public int showDays(Employee e){
-        daysLeft= 0;
-        for (int i=0;i<companies.size();i++){
-            for (int j=1;j<14;j++){
-                if ((Double) (e.companies.get(i).getTotalYears()) >= 5*j) {
-                    daysLeft = 20+j;
+daysLeft=0;
+        for (int j=1;j<14;j++){
+            if ((totalYearsInAllCompanies(e) >= 5*j) ){
+                daysLeft = 20+j;
 
-                }else{
-                    daysLeft=20;
-                }
+            }else if (totalYearsInAllCompanies(e)<=5){
+                daysLeft=20;
             }
-        }
+
+    }
     System.out.println("Broj slobodnih dana: " + daysLeft);
     return daysLeft;
 
@@ -111,6 +87,7 @@ public int showDays(Employee e){
         vacationDays = list;
 
         System.out.println("Broj preostalih dana sada je:  " + (daysLeft-vacationDays.size()));
+       this.daysLeft-=vacationDays.size();
         return (int) p2;
 
     }
@@ -123,12 +100,13 @@ public int showDays(Employee e){
     public String toString() {
         String s = firstName + " " + lastName + "(" + jmbg + ")" +", počeo/la da radi : " + startingDate + "\nPrethodne kompanije: ";
         for (Company c : companies) {
-            s += "\n"+ c.getNameC();
+            s += c.getNameC()+ "\n";
 
         }
         System.out.println(s);
         System.out.println("Broj godina u svim kompanijama:"+ totalYearsInAllCompanies(this));
         System.out.println("Broj dana slobodnih: " + showDays(this));
+
         return s;
     }
 
