@@ -1,79 +1,81 @@
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
     SynergyCompany sc = new SynergyCompany();
+    Scanner s = new Scanner(System.in);
 
     public Menu() throws ParseException {
         menu();
     }
 
 
+
+
     public void menu() throws ParseException {
 
-        Scanner s = new Scanner(System.in);
+        if (sc.getEmployees().isEmpty()) {
+
+            sc.addE();
+            menu();
 
 
-        System.out.println("MENI:\n1.Unos novog zaposlenog\n2.Pregled svih zaposlenih\n3.Odmor");
-        switch (s.nextInt()) {
-            case 1:
-                System.out.println("Koliko zaposlenih želite da dodate? ");
-                int noOfEmployees = s.nextInt();
-                int no = 0;
-                while (noOfEmployees > no) {
-                    System.out.println("Unesite ime zaposlenog.");
-                    String name = s.nextLine();
-                    System.out.println("Unesite prezime zaposlenog.");
-                    String lName = s.nextLine();
-                    System.out.println("Unesite jmbg zaposlenog:");
-                    int jmbg = s.nextInt();
-                    System.out.println("Unesite datum početka rada.Prvo godina:");
-                    String year = s.nextLine();
-                    System.out.println("Mjesec:");
-                    String month = s.nextLine();
-                    year += month;
-                    System.out.println("Dan:");
-                    String day = s.nextLine();
-                    year += day;
-                    List<Company> lista = new ArrayList<>();
+        } else {
+            System.out.println("MENI:\n1.Unos novog zaposlenog\n2.Pregled svih zaposlenih\n3.Odmor \n4.Dodaj kompaniju zaposlenom\n5.Prikaz zaposlenog");
 
-                    System.out.println("Unesite ime firme.");
-                    String cName = s.nextLine();
-                    System.out.println("Unesite staž.");
-                    Double totalY = s.nextDouble();
-                    Company c = new Company(cName, totalY);
+            switch (s.nextInt()) {
+                case 1:
+                    sc.addE();
+                    menu();
+                case 2:
+                    System.out.println(sc);
+                    menu();
 
-                    lista.add(c);
-
-                    Date d = new SimpleDateFormat("yyyyMMdd").parse(year);
-                    Employee e = new Employee(name, lName, jmbg, d, lista);
-                    sc.addEmployee(e);
-                    no++;
-                }
-            case 2:
-                System.out.println(sc);
-                menu();
-
-            case 3:
-                System.out.println("Unesite Vaš JMBG.");
-                for (int i = 0; sc.getEmployees().size() > i; i++) {
-                    if (sc.getEmployees().get(i).getJmbg() == s.nextInt()) {
-                        sc.getEmployees().get(i).takeVacation(sc.getEmployees().get(i));
-                    } else {
-                        System.out.println("Nema zaposlenog sa unesenim matičnim brojem.");
-                        menu();
+                case 3:
+                    System.out.println("Unesite Vaš JMBG.");
+                    s.nextLine();
+                    String jmbg = s.nextLine();
+                    for (int i = 0; sc.getEmployees().size() > i; i++) {
+                        if (sc.getEmployees().get(i).getJmbg().equals(jmbg)) {
+                            sc.getEmployees().get(i).takeVacation();
+                            menu();
+                        }
                     }
+                    System.out.println("Nema zaposlenog sa unesenim matičnim brojem.");
+                    menu();
+                case 4:
+                    System.out.println("Unesite ime kompanije");
+                    s.nextLine();
+                    String companyName = s.nextLine();
+                    System.out.println("Unesite godine rada u kompaniji (DOUBLE): ");
+                    double duration = s.nextDouble();
 
-                }
+                    System.out.println("Unesite jmbg osobe kojoj se kompanija dodaje.");
+                    s.nextLine();
+                    String jmbg2 = s.nextLine();
+                    for (int i = 0; sc.getEmployees().size() > i; i++) {
 
-                menu();
-                break;
+                        if (sc.findById(jmbg2)) {
+                            sc.getEmployees().get(i).addCompany(new Company(companyName, duration));
+                            menu();
 
+                        }
+                    }
+                case 5:
+                    System.out.println("Unesite Vaš JMBG.");
+                    s.nextLine();
+                    String jmbg3 = s.nextLine();
+                    for (int i = 0; sc.getEmployees().size() > i; i++) {
+
+                        if (sc.findById(jmbg3)) {
+                            sc.getEmployees().get(i).toString();
+                            menu();
+                        }
+                    }
+            }
         }
+
+
     }
 
 
